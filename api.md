@@ -10,12 +10,24 @@ Api are the bone of all our plugins, they contain reusable code (in theory) who 
 
 InventoryALaCarte is an API that handle custom menu. With it you can create custom data driven menu, display them to any player and handle what they do !
 
-Link : [Github](https://github.com/Kangawooo-Events/inventoryALaCarte)
+- Link : [Github](https://github.com/Kangawooo-Events/inventoryALaCarte)
 
-Original Author : [Titruc](https://github.com/Titruc)
+- Original Author : [Titruc](https://github.com/Titruc)
 
 ### [Cattamands]()
 
+- Link : [Github](https://github.com/Kangawooo-Events/inventoryALaCarte)
+
+- Original Author : [Titruc](https://github.com/Titruc)
+
 ### [CustomItemsAPI]()
 
+- Link : [Github](https://github.com/Kangawooo-Events/inventoryALaCarte)
+
+- Original Author : [Titruc](https://github.com/Titruc)
+
 ### [shaderPatcher]()
+
+- Link : [Github](https://github.com/Kangawooo-Events/inventoryALaCarte)
+
+- Original Author : [Titruc](https://github.com/Titruc)
