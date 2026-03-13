@@ -19,3 +19,9 @@ For our event, we are moslty working with plugins, datas packs and ressources pa
 
 ## Contents
 
+In this doc you'll find all kind of crazy stuff !
+
+### [API Documentation](api.md)
+
+With the [tiered cake model]() plugins are classify in different layer, here you'll find all plugin from the API layer
+
