@@ -34,9 +34,7 @@ you can give a custom title to your menu with the title field :
 title:
   title: <your title>
 ```
-> **NOTE** : title can be formated by using [formatting codes](https://minecraft.wiki/w/Formatting_codes)
 
-You may think having a title categorie just to have one title field in it is stupid but this is because formatting code are deprecated (see [slicelime quote](https://bugs.mojang.com/browse/MC/issues/MC-190605)) so in the future formatting will be through the title catgorie.
 
 ### Registering the menu
 
@@ -54,6 +52,118 @@ in order to register a menu the MenuFactory class is available. This class handl
 you can create a menu from a `String` path or from a `File`
 
 ```java
+//create a menu from a String, the string contain a path
 MenuHolder menu1 = MenuFactory.createFromPath(menuPath);
+//create a menu from a File, the file contain the YML loaded file
 MenuHolder menu2 = MenuFactory.createFromPath(menuFile);
 ```
+
+those methods return a MenuHolder, wich are basicly your menu YML translated into a java object. Those where the simplest step to create a menu now we can dive in more precise aspect.
+
+Oh and also MenuHolder don't have a constructeur who take a string or a path, for maintability mainly and other reason don't ask
+
+## YML Format
+
+### Introduction
+
+has we've seen into the first menu, it's easy to create a menu from a YML file, but you need to know how to create those YML correclty.
+
+With InventoryALaCarte you can create a menu, manage item in them and what click on those item do.
+
+### Type
+
+as we saw whe a menu is declared he need a type declared by the *type* field
+
+`type : <layout>`
+
+To this day there is only one layout available, but this will change dont worry *trust*
+
+#### generic
+
+The generic layout is the one used for chest for exemple, you have *n*  rows of 9 slots
+
+this layout require another argument called rows wich is the number *n* of rows that the menu will have
+
+```yml
+type : "generic"
+rows : 6
+#this menu will have 6 rows of 9 slots
+```
+
+### Title
+
+As we also saw in the exemple, you can have a title like this : 
+
+```yml
+title:
+  title: <your title>
+```
+
+> **NOTE** : title can be formated by using [formatting codes](https://minecraft.wiki/w/Formatting_codes)
+
+You may think having a title categorie just to have one title field in it is stupid but this is because formatting code are deprecated (see [slicelime quote](https://bugs.mojang.com/browse/MC/issues/MC-190605)) so in the future formatting will be through the title catgorie.
+
+### Items
+
+What is a menu without item in it ? to add item in the menu you can use the *items* category. here's an exemple :
+
+```yml
+items:
+  - slot: 0
+    material: OAK_LOG
+    lore:
+      - "§610$"
+
+    amount : 16
+    click:
+      - action: "shopNStore:give_from_material"
+        parameter:
+          material: OAK_LOG
+          amount: 16
+        conditions:
+          - type: "shopNStore:has_enouth_money"
+            currency: "wildWestShop:cookie"
+            amount: 10
+            logic: AND
+            not: false
+          - type: "is_op"
+            logic: OR
+            not: false
+      - action: "close"
+```
+
+as you can see items is the most complexe part. so let me explain.
+
+#### add an item
+
+the items field is a list of elements. All of those element have 5 fields
+
+> **Note** : item can have less than 5 fields
+
+- ##### slot
+
+    slot is an integer, it's the id of the slot where the item will be displayed.
+
+- ##### material
+
+    material is the item type, the item will be determine by
+    ```java
+    Material.valueOf((String) rawItem.get("material"));
+    ```
+    (rawItem is the current YML items categorie)
+
+- ##### lore
+
+    the name can't be more clear, it's the lore of the item, can be a list, can be colored by [formated text](https://minecraft.wiki/w/Formatting_codes)
+
+- ##### amount
+
+    The quatity of the displayed item 
+
+- ##### click
+
+    this part tell what the heck the plugin is suppose to do when the item is clicked, we'll see that in a minute.
+
+### Clickable event
+
+so as we've seen you can have 
