@@ -166,4 +166,10 @@ the items field is a list of elements. All of those element have 5 fields
 
 ### Clickable event
 
-so as we've seen you can have 
+so a menu need action, to do that you need to have in your item the *click* field. The *click* field is a list of action, action have 3 parameters :
+- name
+  the name of the action ( not really a parameter it's directly after `action : <name>`
+- parameter
+  all parameter require for the clickable event
+- conditions
+  on wich condition this action play (we'll see that in a minute)
