@@ -109,26 +109,38 @@ What is a menu without item in it ? to add item in the menu you can use the *ite
 
 ```yml
 items:
-  - slot: 0
+  test:
+    slot: 0
     material: OAK_LOG
     lore:
       - "§610$"
-
-    amount : 16
+    amount: 16
     click:
-      - action: "shopNStore:give_from_material"
-        parameter:
-          material: OAK_LOG
-          amount: 16
-        conditions:
-          - type: "shopNStore:has_enouth_money"
-            currency: "wildWestShop:cookie"
-            amount: 10
-            logic: AND
-            not: false
-          - type: "is_op"
-            logic: OR
-            not: false
+      - statement:
+          if:
+            conditions:
+              - type: "shopNStore:has_enouth_money"
+                currency: "wildWestShopCookie"
+                amount: 10
+                logic: AND
+                not: false
+              - type: "is_op"
+                logic: OR
+                not: false
+            actions:
+              - action: "shopNStore:give_from_material"
+                parameter:
+                  material: OAK_LOG
+                  amount: 16
+              - action: "shopNStore:remove_money"
+                parameter:
+                  currency: "wildWestShopCookie"
+                  amount: 10
+          else:
+            actions:
+              - action: "send_message"
+                parameter:
+                  text: "§4You don't have enough money to buy that!"
       - action: "close"
 ```
 
@@ -166,10 +178,82 @@ the items field is a list of elements. All of those element have 5 fields
 
 ### Clickable event
 
-so a menu need action, to do that you need to have in your item the *click* field. The *click* field is a list of action, action have 3 parameters :
-- name
-  the name of the action ( not really a parameter it's directly after `action : <name>`
-- parameter
-  all parameter require for the clickable event
-- conditions
-  on wich condition this action play (we'll see that in a minute)
+so a menu need action, to do that you need to have in your item the *click* field. The *click* field is a list of action or statement.
+
+#### Action
+
+Action are simple, it just tell an action to execute and is parameters they are structure like this : 
+
+```yml
+- action: "shopNStore:give_from_material"
+  parameter:
+    material: OAK_LOG
+    amount: 16
+```
+all parameter are specific to an action, so you need to know wich action require what.
+
+#### statement
+
+Statement are basicly condition tree that execute action depending on some condition. they are structure like this:
+
+```yml
+- statement:
+    if:
+      conditions:
+        - type: "shopNStore:has_enouth_money"
+          currency: "wildWestShopCookie"
+          amount: 10
+          logic: AND
+          not: false
+        - type: "is_op"
+          logic: OR
+          not: false
+      actions:
+        - action: "shopNStore:give_from_material"
+          parameter:
+            material: OAK_LOG
+            amount: 16
+        - action: "shopNStore:remove_money"
+          parameter:
+            currency: "wildWestShopCookie"
+            amount: 10
+    else:
+      actions:
+        - action: "send_message"
+          parameter:
+            text: "§4You don't have enough money to buy that!"
+```
+
+##### if
+
+Statement have one required field : *if*, in there you put two field : *conditions* and *actions*. Conditions tell on wich condition the action will be execute. 
+
+###### condition
+
+Condition is structure as a liste of type, type is the ClickableCondition name : 
+
+```yml
+conditions:
+  - type: "shopNStore:has_enouth_money"
+    currency: "wildWestShopCookie"
+    amount: 10
+    logic: AND
+    not: false
+  - type: "is_op"
+    logic: OR
+    not: false
+```
+
+as you can see there is some type, some parameters for the condition and two field called *logic* and *not*
+
+**not** : if true you're condition will be treated as !condition
+
+**logic** tell the logic to use, each element of the list will be test in order, so if you want you can add some logic like AND, NAND, OR, NOR
+
+##### else if
+
+Statement can have as much else if field as you wish. they work like if
+
+##### else
+
+No need to specifie any condition, only the action field is required.
