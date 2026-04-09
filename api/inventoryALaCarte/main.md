@@ -55,7 +55,7 @@ you can create a menu from a `String` path or from a `File`
 //create a menu from a String, the string contain a path
 MenuHolder menu1 = MenuFactory.createFromPath(menuPath);
 //create a menu from a File, the file contain the YML loaded file
-MenuHolder menu2 = MenuFactory.createFromPath(menuFile);
+MenuHolder menu2 = MenuFactory.createFromFile(menuFile);
 ```
 
 those methods return a MenuHolder, wich are basicly your menu YML translated into a java object. Those where the simplest step to create a menu now we can dive in more precise aspect.
@@ -76,7 +76,7 @@ as we saw whe a menu is declared he need a type declared by the *type* field
 
 `type : <layout>`
 
-To this day there is only one layout available, but this will change dont worry *trust*
+To this day there is only two layout available, but this will change dont worry *trust*
 
 #### generic
 
@@ -89,6 +89,10 @@ type : "generic"
 rows : 6
 #this menu will have 6 rows of 9 slots
 ```
+
+#### merchant
+
+The merchant layout is simply the villager UI, with it you can do shop for exemple. This layout can't have an `Items` field and require instead a `trades` one.
 
 ### Title
 
